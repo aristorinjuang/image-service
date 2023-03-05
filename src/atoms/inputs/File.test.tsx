@@ -1,12 +1,14 @@
 import { fireEvent, render } from '@testing-library/react';
-import ImageContext from '../../contexts/ImageContext';
+import ImageContext from '../../contexts/UploadPageContext';
+import { Props } from "../../atoms/buttons/DownloadButton";
 import _File from './File';
 
 it('should contain a file input and succeed upload an image', () => {
+  let downloadList: Props[] = []
   let setJPEG = (value: string) => {}
   let setWebP = (value: string) => {}
   let file = render(
-    <ImageContext.Provider value={{setJPEG, setWebP}}>
+    <ImageContext.Provider value={{downloadList, setJPEG, setWebP}}>
       <_File />
     </ImageContext.Provider>
   );

@@ -1,7 +1,8 @@
 import { useContext } from "react";
 import Resizer from "react-image-file-resizer";
-import ImageContext from "../../contexts/ImageContext";
+import UploadPageContext from "../../contexts/UploadPageContext";
 import { FileUploader } from "react-drag-drop-files";
+import { Props } from "../../atoms/buttons/DownloadButton";
 
 type ThumbnailCategory = {
   height: number
@@ -21,7 +22,8 @@ const thumbnailCategories: ThumbnailCategories = [
 const generateImages = (
   file: any,
   setJPEG: (value: string) => void,
-  setWebP: (value: string) => void
+  setWebP: (value: string) => void,
+  downloadList: Props[]
 ) => {
   for (let thumbnailCategory of thumbnailCategories) {
     try {
@@ -35,6 +37,10 @@ const generateImages = (
         (uri) => {
           if (thumbnailCategory.suffix === 'original') {
             setJPEG(String(uri))
+            downloadList.push({
+              filename: 'original.jpg',
+              href: String(uri)
+            })
           }
         }
       );
@@ -53,6 +59,10 @@ const generateImages = (
         (uri) => {
           if (thumbnailCategory.suffix === 'original') {
             setWebP(String(uri))
+            downloadList.push({
+              filename: 'original.webp',
+              href: String(uri)
+            })
           }
         }
       );
@@ -65,10 +75,10 @@ const generateImages = (
 }
 
 export default function File() {
-  let image = useContext(ImageContext);
+  let uploadPageContext = useContext(UploadPageContext);
   let handler = (file: any) => {
     if (file) {
-      generateImages(file, image.setJPEG, image.setWebP)
+      generateImages(file, uploadPageContext.setJPEG, uploadPageContext.setWebP, uploadPageContext.downloadList)
     }
   }
 
