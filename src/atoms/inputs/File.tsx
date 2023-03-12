@@ -26,6 +26,11 @@ const generateImages = (
   downloadList: Props[]
 ) => {
   for (let thumbnailCategory of thumbnailCategories) {
+    let filename = 'original'
+    if (downloadList.length >= 2) {
+      filename += '_' + (downloadList.length / 2 + 1)
+    }
+  
     try {
       Resizer.imageFileResizer(
         file,
@@ -38,7 +43,7 @@ const generateImages = (
           if (thumbnailCategory.suffix === 'original') {
             setJPEG(String(uri))
             downloadList.push({
-              filename: 'original.jpg',
+              filename: filename + '.jpg',
               href: String(uri)
             })
           }
@@ -60,7 +65,7 @@ const generateImages = (
           if (thumbnailCategory.suffix === 'original') {
             setWebP(String(uri))
             downloadList.push({
-              filename: 'original.webp',
+              filename: filename + '.webp',
               href: String(uri)
             })
           }
@@ -70,8 +75,6 @@ const generateImages = (
       console.error(err);
     }
   }
-
-  // TODO: zip or post them
 }
 
 export default function File() {
