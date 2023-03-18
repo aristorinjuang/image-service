@@ -23,7 +23,7 @@ const generateImages = (
         thumbnailCategory.width,
         thumbnailCategory.height,
         "JPEG",
-        80,
+        thumbnailCategory.quality,
         0,
         (uri) => {
           if (thumbnailCategory.name === 'original') {
@@ -46,7 +46,7 @@ const generateImages = (
         thumbnailCategory.width,
         thumbnailCategory.height,
         "WEBP",
-        100,
+        thumbnailCategory.quality,
         0,
         (uri) => {
           if (thumbnailCategory.name === 'original') {

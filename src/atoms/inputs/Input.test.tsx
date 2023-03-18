@@ -14,9 +14,9 @@ it('should show the text input', () => {
 
   fireEvent.change(element, {
     target: {
-      value: ['100'],
+      value: ['80'],
     },
   })
 
-  expect(console.log).toHaveBeenCalledWith('100');
+  expect(console.log).toHaveBeenCalledWith('80');
 })

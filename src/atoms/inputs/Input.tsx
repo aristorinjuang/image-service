@@ -24,6 +24,8 @@ export default function Input(props: Props) {
       title={props.title}
       placeholder={props.placeholder}
       disabled={props.isDisabled}
+      min={type === 'number' ? 0 : undefined}
+      max={props.name === 'quality' ? 100 : undefined}
       className="w-full p-2"
     />
   )

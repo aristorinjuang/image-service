@@ -1,13 +1,13 @@
 export type Props = {
   children: JSX.Element
-  width?: string
+  width?: number
 }
 
 export default function FormField(props: Props) {
   let width = '1/6'
   switch (props.width) {
-    case 'half':
-      width = '3/6'
+    case 2:
+      width = '2/6'
   }
 
   return (

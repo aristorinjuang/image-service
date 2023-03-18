@@ -8,6 +8,7 @@ export type Props = {
   name: string
   height: number
   width: number
+  quality: number
   isDisabled?: boolean
 }
 
@@ -18,7 +19,7 @@ export default function DeleteForm(props: Props) {
       return thumbnailCategory.name === props.name
     })
 
-    uploadPageContext.thumbnailCategories.at(index)!.height = Number(value)
+    uploadPageContext.thumbnailCategories.at(index)!.height = Number(value) < 0 ? 0 : Number(value)
     uploadPageContext.setThumbnailCategories([...uploadPageContext.thumbnailCategories])
   }
   let updateWidth = (value: string) => {
@@ -26,7 +27,15 @@ export default function DeleteForm(props: Props) {
       return thumbnailCategory.name === props.name
     })
 
-    uploadPageContext.thumbnailCategories.at(index)!.width = Number(value)
+    uploadPageContext.thumbnailCategories.at(index)!.width = Number(value) < 0 ? 0 : Number(value)
+    uploadPageContext.setThumbnailCategories([...uploadPageContext.thumbnailCategories])
+  }
+  let updateQuality = (value: string) => {
+    let index = uploadPageContext.thumbnailCategories.findIndex(thumbnailCategory => {
+      return thumbnailCategory.name === props.name
+    })
+
+    uploadPageContext.thumbnailCategories.at(index)!.quality = Number(value) > 100 ? 100 : Number(value) < 100 ? 0 : Number(value)
     uploadPageContext.setThumbnailCategories([...uploadPageContext.thumbnailCategories])
   }
   let deleteThumbnailCategory = (e: React.MouseEvent) => {
@@ -36,26 +45,16 @@ export default function DeleteForm(props: Props) {
       return thumbnailCategory.name !== props.name
     })])
   }
-
+  let className = "border-x-2 border-t-2 border-dashed border-blue-800 flex"
+  let submitButton = <SubmitButton action={deleteThumbnailCategory} type="delete" />
   if (props.isDisabled) {
-    return (
-      <form method="post" className="border-x-2 border-t-2 border-dashed border-blue-800 rounded-t-md flex">
-        <FormField width="half">
-          <Input value={props.name} name="name" title="Name" placeholder="Name" isDisabled={true} />
-        </FormField>
-        <FormField>
-          <Input action={updateHeight} value={String(props.height)} type="number" name="height" title="Height" placeholder="Height" />
-        </FormField>
-        <FormField>
-          <Input action={updateWidth} value={String(props.width)} type="number" name="width" title="Width" placeholder="Width" />
-        </FormField>
-        <FormField><SubmitButton type="dummy" /></FormField>
-      </form>
-    )
+    className = "border-x-2 border-t-2 border-dashed border-blue-800 rounded-t-md flex"
+    submitButton = <SubmitButton type="dummy" />
   }
+
   return (
-    <form method="post" className="border-x-2 border-t-2 border-dashed border-blue-800 flex">
-      <FormField width="half">
+    <form method="post" className={className}>
+      <FormField width={2}>
         <Input value={props.name} name="name" title="Name" placeholder="Name" isDisabled={true} />
       </FormField>
       <FormField>
@@ -65,7 +64,10 @@ export default function DeleteForm(props: Props) {
         <Input action={updateWidth} value={String(props.width)} type="number" name="width" title="Width" placeholder="Width" />
       </FormField>
       <FormField>
-        <SubmitButton action={deleteThumbnailCategory} type="delete" />
+        <Input action={updateQuality} value={String(props.quality)} type="number" name="quality" title="Quality" placeholder="Quality" />
+      </FormField>
+      <FormField>
+        {submitButton}
       </FormField>
     </form>
   )

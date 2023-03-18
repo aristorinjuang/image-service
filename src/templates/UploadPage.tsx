@@ -21,7 +21,8 @@ export default function UploadPage(props: Props) {
     {
       name: 'original',
       height: 1080,
-      width: 1920
+      width: 1920,
+      quality: 80
     }
   ])
   let [jpeg, setJPEG] = useState('');
@@ -39,6 +40,7 @@ export default function UploadPage(props: Props) {
               name={thumbnailCategory.name}
               height={thumbnailCategory.height}
               width={thumbnailCategory.width}
+              quality={thumbnailCategory.quality}
               isDisabled={thumbnailCategory.name === 'original'}
             />
           )

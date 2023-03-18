@@ -5,6 +5,7 @@ export type ThumbnailCategory = {
   name: string
   height: number
   width: number
+  quality: number
 }
 export type ThumbnailCategories = ThumbnailCategory[]
 

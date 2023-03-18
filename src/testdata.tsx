@@ -24,12 +24,14 @@ const thumbnailCategories: ThumbnailCategories = [
   {
     name: 'original',
     height: 1080,
-    width: 1920
+    width: 1920,
+    quality: 80
   },
   {
     name: 'thumbnail',
     height: 300,
-    width: 300
+    width: 300,
+    quality: 80
   }
 ]
 const setThumbnailCategories = (_: ThumbnailCategories) => {}
