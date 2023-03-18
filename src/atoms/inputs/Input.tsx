@@ -26,7 +26,7 @@ export default function Input(props: Props) {
       disabled={props.isDisabled}
       min={type === 'number' ? 0 : undefined}
       max={props.name === 'quality' ? 100 : undefined}
-      className="w-full p-2"
+      className="w-full p-2 sm:text-base text-sm"
     />
   )
 }

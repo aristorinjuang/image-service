@@ -10,9 +10,11 @@ export default function ImageComparison(props: Props) {
     return <></>
   }
   return (
-    <ReactCompareSlider
-      itemOne={<ReactCompareSliderImage src={props.jpeg} alt={props.jpeg} />}
-      itemTwo={<ReactCompareSliderImage src={props.webp} alt={props.webp} />}
-    />
+    <div className="mb-8">
+       <ReactCompareSlider
+        itemOne={<ReactCompareSliderImage src={props.jpeg} alt={props.jpeg} />}
+        itemTwo={<ReactCompareSliderImage src={props.webp} alt={props.webp} />}
+      />
+    </div>
   )
 }

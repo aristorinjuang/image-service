@@ -9,6 +9,7 @@ import { Props as DownloadButtonProps } from "../atoms/buttons/DownloadButton";
 import DownloadList from "../organics/DownloadList";
 import DeleteForm from "../organics/DeleteForm";
 import AddForm from "../organics/AddForm";
+import Issue from "../atoms/typography/Issue";
 
 type Props = {
   title: string
@@ -50,6 +51,7 @@ export default function UploadPage(props: Props) {
         <DownloadList downloadList={downloadList} />
       </div>
       <ImageComparison jpeg={jpeg} webp={webp} />
+      <Issue />
       <Copyright />
     </UploadPageContext.Provider>
   )
