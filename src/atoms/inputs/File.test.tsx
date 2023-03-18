@@ -1,24 +1,33 @@
 import { fireEvent, render } from '@testing-library/react';
 import UploadPageContext from '../../contexts/UploadPageContext';
-import { Props } from "../../atoms/buttons/DownloadButton";
 import _File from './File';
+import Resizer from "react-image-file-resizer";
+import { downloadList, setDownloadList, thumbnailCategories, setThumbnailCategories, setJPEG, setWebP } from '../../testdata';
 
 it('should contain a file input and succeed upload an image', () => {
-  let downloadList: Props[] = []
-  let setJPEG = (value: string) => {}
-  let setWebP = (value: string) => {}
-  let file = render(
-    <UploadPageContext.Provider value={{downloadList, setJPEG, setWebP}}>
+  let file = new File(['(⌐□_□)'], 'chucknorris.png', {type: 'image/png'})
+  let resizerSpy = jest.spyOn(Resizer, 'imageFileResizer')
+
+  let _file = render(
+    <UploadPageContext.Provider value={{
+      downloadList,
+      setDownloadList,
+      thumbnailCategories,
+      setThumbnailCategories,
+      setJPEG,
+      setWebP
+    }}>
       <_File />
     </UploadPageContext.Provider>
   );
-  let element = file.container.querySelector('input[type="file"]')!
+  let element = _file.container.querySelector('input[type="file"]')!
 
   fireEvent.change(element, {
     target: {
-      files: [new File(['(⌐□_□)'], 'chucknorris.png', {type: 'image/png'})],
+      files: [file],
     },
   })
 
-  expect(file.container).toContainHTML('type="file"');
+  expect(_file.container).toContainHTML('type="file"');
+  expect(resizerSpy).toHaveBeenCalled();
 });

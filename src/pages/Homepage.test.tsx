@@ -1,8 +1,6 @@
 import { render } from '@testing-library/react';
 import Homepage from './Homepage';
 
-global.ResizeObserver = require('resize-observer-polyfill')
-
 it('should contain a form', () => {
   let homepage = render(<Homepage />);
 

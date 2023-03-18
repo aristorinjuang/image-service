@@ -1,32 +1,18 @@
 import { useContext } from "react";
 import Resizer from "react-image-file-resizer";
-import UploadPageContext from "../../contexts/UploadPageContext";
+import UploadPageContext, { ThumbnailCategories } from "../../contexts/UploadPageContext";
 import { FileUploader } from "react-drag-drop-files";
-import { Props } from "../../atoms/buttons/DownloadButton";
+import { Props as DownloadButtonProps } from "../../atoms/buttons/DownloadButton";
 
-type ThumbnailCategory = {
-  height: number
-  suffix: string
-  width: number
-}
-type ThumbnailCategories = ThumbnailCategory[]
-
-const fileTypes = ["JPG", "PNG", "GIF", "SVG"];
-const thumbnailCategories: ThumbnailCategories = [
-  {
-    height: 1080,
-    suffix: 'original',
-    width: 1920
-  }
-];
 const generateImages = (
   file: any,
+  thumbnailCategories: ThumbnailCategories,
   setJPEG: (value: string) => void,
   setWebP: (value: string) => void,
-  downloadList: Props[]
+  downloadList: DownloadButtonProps[]
 ) => {
   for (let thumbnailCategory of thumbnailCategories) {
-    let filename = 'original'
+    let filename = thumbnailCategory.name
     if (downloadList.length >= 2) {
       filename += '_' + (downloadList.length / 2 + 1)
     }
@@ -40,13 +26,14 @@ const generateImages = (
         80,
         0,
         (uri) => {
-          if (thumbnailCategory.suffix === 'original') {
+          if (thumbnailCategory.name === 'original') {
             setJPEG(String(uri))
-            downloadList.push({
-              filename: filename + '.jpg',
-              href: String(uri)
-            })
           }
+
+          downloadList.push({
+            filename: filename + '.jpg',
+            href: String(uri)
+          })
         }
       );
     } catch (err) {
@@ -62,13 +49,14 @@ const generateImages = (
         100,
         0,
         (uri) => {
-          if (thumbnailCategory.suffix === 'original') {
+          if (thumbnailCategory.name === 'original') {
             setWebP(String(uri))
-            downloadList.push({
-              filename: filename + '.webp',
-              href: String(uri)
-            })
           }
+
+          downloadList.push({
+            filename: filename + '.webp',
+            href: String(uri)
+          })
         }
       );
     } catch (err) {
@@ -81,11 +69,17 @@ export default function File() {
   let uploadPageContext = useContext(UploadPageContext);
   let handler = (file: any) => {
     if (file) {
-      generateImages(file, uploadPageContext.setJPEG, uploadPageContext.setWebP, uploadPageContext.downloadList)
+      generateImages(
+        file,
+        uploadPageContext.thumbnailCategories,
+        uploadPageContext.setJPEG,
+        uploadPageContext.setWebP,
+        uploadPageContext.downloadList
+      )
     }
   }
 
   return (
-    <FileUploader handleChange={handler} types={fileTypes} maxSize={16} />
+    <FileUploader handleChange={handler} types={["JPG", "PNG", "GIF", "SVG"]} maxSize={16} />
   )
 }
