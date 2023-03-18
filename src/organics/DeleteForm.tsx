@@ -13,6 +13,22 @@ export type Props = {
 
 export default function DeleteForm(props: Props) {
   let uploadPageContext = useContext(UploadPageContext)
+  let updateHeight = (value: string) => {
+    let index = uploadPageContext.thumbnailCategories.findIndex(thumbnailCategory => {
+      return thumbnailCategory.name === props.name
+    })
+
+    uploadPageContext.thumbnailCategories.at(index)!.height = Number(value)
+    uploadPageContext.setThumbnailCategories([...uploadPageContext.thumbnailCategories])
+  }
+  let updateWidth = (value: string) => {
+    let index = uploadPageContext.thumbnailCategories.findIndex(thumbnailCategory => {
+      return thumbnailCategory.name === props.name
+    })
+
+    uploadPageContext.thumbnailCategories.at(index)!.width = Number(value)
+    uploadPageContext.setThumbnailCategories([...uploadPageContext.thumbnailCategories])
+  }
   let deleteThumbnailCategory = (e: React.MouseEvent) => {
     e.preventDefault()
 
@@ -28,10 +44,10 @@ export default function DeleteForm(props: Props) {
           <Input value={props.name} name="name" title="Name" placeholder="Name" isDisabled={true} />
         </FormField>
         <FormField>
-          <Input value={String(props.height)} type="number" name="height" title="Height" placeholder="Height" />
+          <Input action={updateHeight} value={String(props.height)} type="number" name="height" title="Height" placeholder="Height" />
         </FormField>
         <FormField>
-          <Input value={String(props.width)} type="number" name="width" title="Width" placeholder="Width" />
+          <Input action={updateWidth} value={String(props.width)} type="number" name="width" title="Width" placeholder="Width" />
         </FormField>
         <FormField><SubmitButton type="dummy" /></FormField>
       </form>
@@ -40,13 +56,13 @@ export default function DeleteForm(props: Props) {
   return (
     <form method="post" className="border-x-2 border-t-2 border-dashed border-blue-800 flex">
       <FormField width="half">
-        <Input value={props.name} name="name" title="Name" placeholder="Name" />
+        <Input value={props.name} name="name" title="Name" placeholder="Name" isDisabled={true} />
       </FormField>
       <FormField>
-        <Input value={String(props.height)} type="number" name="height" title="Height" placeholder="Height" />
+        <Input action={updateHeight} value={String(props.height)} type="number" name="height" title="Height" placeholder="Height" />
       </FormField>
       <FormField>
-        <Input value={String(props.width)} type="number" name="width" title="Width" placeholder="Width" />
+        <Input action={updateWidth} value={String(props.width)} type="number" name="width" title="Width" placeholder="Width" />
       </FormField>
       <FormField>
         <SubmitButton action={deleteThumbnailCategory} type="delete" />
