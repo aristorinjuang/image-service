@@ -8,8 +8,8 @@ export type DownloadListProps = {
 export default function DownloadList(props: DownloadListProps) {
   return (
     <ul>
-      {props.downloadList.map(downloadItem => {
-        return <DownloadItem key={downloadItem.filename} filename={downloadItem.filename} href={downloadItem.href} />
+      {props.downloadList.map((downloadItem, index) => {
+        return <DownloadItem key={downloadItem.filename + '-' + index} filename={downloadItem.filename} href={downloadItem.href} />
       })}
     </ul>
   )

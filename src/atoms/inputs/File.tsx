@@ -4,19 +4,59 @@ import UploadPageContext, { ThumbnailCategories } from "../../contexts/UploadPag
 import { FileUploader } from "react-drag-drop-files";
 import { Props as DownloadButtonProps } from "../../atoms/buttons/DownloadButton";
 
-const generateImages = (
+function responseUriFuncJPEG(
+  setJPEG: (value: string) => void,
+  filename: string,
+  thumbnailCategoryName: string,
+  downloadList: DownloadButtonProps[]
+): (uri: string | Blob | File | ProgressEvent<FileReader>) => void {
+  return function(uri) {
+    if (thumbnailCategoryName === 'original') {
+      setJPEG(String(uri))
+    }
+
+    downloadList.push({
+      filename: `${filename}${thumbnailCategoryName === 'original' ? '' : '_' + thumbnailCategoryName}.jpg`,
+      href: String(uri)
+    })
+  }
+}
+
+function responseUriFuncWebP(
+  setWebP: (value: string) => void,
+  filename: string,
+  thumbnailCategoryName: string,
+  downloadList: DownloadButtonProps[]
+): (uri: string | Blob | File | ProgressEvent<FileReader>) => void {
+  return function(uri) {
+    if (thumbnailCategoryName === 'original') {
+      setWebP(String(uri))
+    }
+
+    downloadList.push({
+      filename: `${filename}${thumbnailCategoryName === 'original' ? '' : '_' + thumbnailCategoryName}.webp`,
+      href: String(uri)
+    })
+  }
+}
+
+function fileToFilename(file: any): string {
+  let chunks = file.name.split('.')
+  let filename = chunks.slice(0, chunks.length - 1).join('.')
+
+  return filename
+}
+
+function generateImages(
   file: any,
   thumbnailCategories: ThumbnailCategories,
   setJPEG: (value: string) => void,
   setWebP: (value: string) => void,
   downloadList: DownloadButtonProps[]
-) => {
+) {
+  let filename = fileToFilename(file);
+
   for (let thumbnailCategory of thumbnailCategories) {
-    let filename = thumbnailCategory.name
-    if (downloadList.length >= 2) {
-      filename += '_' + (downloadList.length / 2 + 1)
-    }
-  
     try {
       Resizer.imageFileResizer(
         file,
@@ -25,16 +65,7 @@ const generateImages = (
         "JPEG",
         thumbnailCategory.quality,
         0,
-        (uri) => {
-          if (thumbnailCategory.name === 'original') {
-            setJPEG(String(uri))
-          }
-
-          downloadList.push({
-            filename: filename + '.jpg',
-            href: String(uri)
-          })
-        }
+        responseUriFuncJPEG(setJPEG, filename, thumbnailCategory.name, downloadList)
       );
     } catch (err) {
       console.error(err);
@@ -48,16 +79,7 @@ const generateImages = (
         "WEBP",
         thumbnailCategory.quality,
         0,
-        (uri) => {
-          if (thumbnailCategory.name === 'original') {
-            setWebP(String(uri))
-          }
-
-          downloadList.push({
-            filename: filename + '.webp',
-            href: String(uri)
-          })
-        }
+        responseUriFuncWebP(setWebP, filename, thumbnailCategory.name, downloadList)
       );
     } catch (err) {
       console.error(err);
